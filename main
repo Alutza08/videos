@@ -1,0 +1,63 @@
+from PyQt5.QtCore import QUrl
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5.QtMultimediaWidgets import QVideoWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QHBoxLayout
+
+
+def play():
+    media.play()
+
+def stop():
+    media.stop()
+
+def rewind_backwards():
+    current_position = media.position()
+    media.setPosition(current_position - 1000)
+
+def rewind_forwards():
+    current_position = media.position()
+    media.setPosition(current_position + 1000)
+
+app = QApplication([])
+
+win = QWidget()
+win.resize(900, 800)
+
+video = QVideoWidget()
+media = QMediaPlayer()
+media.setVideoOutput(video)
+
+videos = ["kitty.avi"]
+path_to_video = "C:\\Users\\NShpil\\Downloads\\"
+vid = QMediaContent(QUrl.fromLocalFile(path_to_video + videos[0]))
+
+media.setMedia(vid)
+media.play()
+
+win_layout = QVBoxLayout()
+win_layout.addWidget(video)
+
+
+btn_play = QPushButton("Грати")
+btn_stop = QPushButton("Стоп")
+btn_rewind_backwards = QPushButton("Rewind 1s Back")
+btn_rewind_forwards = QPushButton("Rewind 1s Forward")
+
+
+row = QHBoxLayout()
+row.addWidget(btn_play)
+row.addWidget(btn_stop)
+row.addWidget(btn_rewind_backwards)
+row.addWidget(btn_rewind_forwards)
+win_layout.addLayout(row)
+
+
+btn_play.clicked.connect(play)
+btn_stop.clicked.connect(stop)
+btn_rewind_backwards.clicked.connect(rewind_backwards)
+btn_rewind_forwards.clicked.connect(rewind_forwards)
+
+win.setLayout(win_layout)
+win.show()
+
+app.exec_()
